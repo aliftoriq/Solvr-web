@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card my-3 shadow-sm rounded-4 border-0">
+            <h5 class="m-4 text-black">Employee Data</h5>
+            <div class="card-body">
+                <div class="table-responsive fs-6">
+                    <table class="table table-clean table-hover align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>NIP</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Branch</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="employees.length === 0">
+                                <td colspan="6" class="text-center text-gray-800">No data available.
+                                </td>
+                            </tr>
+                            <tr *ngFor="let emp of employees" class="text-dark">
+                                <td>{{ emp.name }}</td>
+                                <td>{{ emp.nip }}</td>
+                                <td>{{ emp.email }}</td>
+                                <td>{{ emp.department }}</td>
+                                <td>{{ emp.branch.name }}</td>
+                                <td>
+                                    <!-- <button class="btn" [ngClass]="emp.isActive ? 'btn-success' : 'btn-danger'"
+                                            (click)="toggleStatus(emp)">
+                                            {{ emp.isActive ? 'Deactivate' : 'Activate' }}
+                                        </button> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Employee Form Card -->
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Add New Account</h5>
+            </div>
+            <div class="card-body">
+                <form (ngSubmit)="addEmployee()">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" id="name" class="form-control" [(ngModel)]="newEmployee.name" name="name"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nip" class="form-label">NIP</label>
+                        <input type="text" id="nip" class="form-control" [(ngModel)]="newEmployee.nip" name="nip"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" class="form-control" [(ngModel)]="newEmployee.email" name="email"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="department" class="form-label">Department</label>
+                        <input type="text" id="department" class="form-control" [(ngModel)]="newEmployee.department"
+                            name="department" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="branch" class="form-label">Branch</label>
+                        <select id="branch" class="form-control" [(ngModel)]="newEmployee.branch" name="branch"
+                            required>
+                            <option *ngFor="let branch of branches" [ngValue]="branch.id">
+                                {{ branch.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Add Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

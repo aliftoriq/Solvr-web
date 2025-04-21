@@ -1,0 +1,21 @@
+.logout-popup {
+  right: 0; 
+  left: auto;     
+  top: 150%; 
+  margin-top: 0rem; 
+  min-width: 100px;
+  z-index: 1050;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.3s ease-in-out;
+}
+
+:host ::ng-deep .logout-popup.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+:host ::ng-deep .logout-popup.ng-animating {
+  opacity: 1;
+  transform: translateX(0);
+}

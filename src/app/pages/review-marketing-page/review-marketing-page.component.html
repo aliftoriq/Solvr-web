@@ -1,0 +1,44 @@
+<!-- Heading -->
+<div class="card my-3 shadow-sm rounded-4 border-0">
+    <h5 class="m-4 text-black">Loan Application</h5>
+    <div class="card-body">
+        <div class="table-responsive fs-6">
+            <table class="table table-clean table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Phone</th>
+                        <th>NIK</th>
+                        <th>Amount</th>
+                        <th>Tenor</th>
+                        <th>Create At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loanApplications.length === 0">
+                        <td colspan="6" class="text-center text-gray-800">No data available.
+                        </td>
+                    </tr>
+                    <tr *ngFor="let loan of loanApplications" class="text-dark">
+                        <td>{{ loan.userCustomer.phone }}</td>
+                        <td>{{ loan.userCustomer.nik }}</td>
+                        <td>{{ loan.loanAmount | currency:'IDR ':'symbol':'1.0-0' }}</td>
+                        <td>{{ loan.loanTenor }}</td>
+                        <td>{{ loan.requestedAt }}</td>
+                        <td>
+                            <button (click)="openReviewModal(loan)" class="btn btn-primary">Review</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <app-review-notes *ngIf="selectedLoan" [loan]="selectedLoan" (close)="closeReviewModal()"
+            (submitReview)="submitReview($event)">
+        </app-review-notes>
+
+
+    </div>
+</div>

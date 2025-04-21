@@ -1,0 +1,83 @@
+<!-- Role Management -->
+<div class="card my-4 shadow-sm rounded-4 border-0">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <h5 class="mb-0 text-primary fw-semibold"><i class="bi bi-people-fill me-2"></i>Role Management</h5>
+    </div>
+    <div class="card-body row">
+        <div class="col-md-12">
+            <div class="table-responsive fs-6">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Role</th>
+                            <th>Features</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="roles.length === 0">
+                            <td colspan="2" class="text-center text-muted">No roles found.</td>
+                        </tr>
+                        <tr *ngFor="let role of roles" [class.table-active]="selectedRole?.id === role.id"
+                            (click)="selectRole(role)" style="cursor: pointer;">
+                            <td class="fw-semibold">{{ role.name }}</td>
+                            <td>
+                                <ng-container *ngFor="let feature of role.featureLists">
+                                    <span class="badge bg-secondary me-1">{{ feature.name }}</span>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Feature Management -->
+<div class="card my-4 shadow-sm rounded-4 border-0">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <h5 class="mb-0 text-primary fw-semibold"><i class="bi bi-sliders2-vertical me-2"></i>Feature Management</h5>
+        <div *ngIf="selectedRole" class="text-muted small">
+            Managing features for role: <strong>{{ selectedRole.name }}</strong>
+        </div>
+    </div>
+    <div class="card-body row">
+        <!-- Search Box -->
+        <div class="mb-3 end-0">
+            <input type="text" class="form-control" placeholder="Search feature..." [(ngModel)]="featureSearchQuery">
+        </div>
+
+        <div class="table-responsive fs-6">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 5%;">#</th>
+                        <th>Feature</th>
+                        <th class="text-center" style="width: 15%;">Assigned</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredFeatures.length === 0">
+                        <td colspan="3" class="text-center text-muted">No features found.</td>
+                    </tr>
+                    <tr *ngFor="let feature of filteredFeatures; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td class="fw-medium">{{ feature.name }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm"
+                                [ngClass]="hasFeature(feature.id) ? 'btn-success' : 'btn-outline-secondary'"
+                                [disabled]="!selectedRole" (click)="toggleFeature(feature)"
+                                [attr.aria-label]="hasFeature(feature.id) ? 'Remove feature' : 'Add feature'">
+                                <i class="bi"
+                                    [ngClass]="hasFeature(feature.id) ? 'bi-check-circle-fill' : 'bi-plus-circle'">
+                                </i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

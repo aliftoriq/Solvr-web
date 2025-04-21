@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center align-items-center vh-100" style="
+    background-image: url('Background.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  ">
+
+    <img src="assets/watemark.png" alt="" class="d-flex position-absolute position-fixed w-5 bottom-0 m-4 start-0" />
+
+    <div class="card shadow p-5 rounded-4" style="width: 100%; max-width: 400px;">
+        <!-- Logo -->
+        <div class="text-center mb-4">
+            <img src="solvrDashboard.png" alt="Logo" class="w-100 mb-2" />
+            <h4 class="fw-bold">Login</h4>
+        </div>
+
+        <!-- Form -->
+        <form (ngSubmit)="login()" #loginForm="ngForm">
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="username" class="form-label">Email</label>
+                <input type="email" class="form-control" id="username" name="username" [(ngModel)]="username" required
+                    #usernameInput="ngModel" />
+                <div *ngIf="usernameInput.invalid && usernameInput.touched" class="text-danger small">
+                    Email wajib diisi.
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password"
+                        name="password" [(ngModel)]="password" required #passwordInput="ngModel" />
+                    <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()"
+                        tabindex="-1" [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                        <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                    </button>
+                </div>
+                <div *ngIf="passwordInput.invalid && passwordInput.touched" class="text-danger small">
+                    Password wajib diisi.
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="text-danger mb-2">{{ errorMessage }}</div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">
+                Login
+            </button>
+        </form>
+    </div>
+</div>

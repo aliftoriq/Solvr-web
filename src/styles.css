@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+.w-5{
+  width: 15em !important;
+}
+
+body {
+    font-family: 'Poppins', sans-serif !important;;
+    background-color: rgb(231, 236, 248) !important;
+}
+
+.bg-custom {
+    background-color: rgb(231, 236, 248) !important;
+}
+
+/* Global Table Style - styles.scss */
+.table-clean {
+  border-collapse: separate !important;
+  border-spacing: 0 0.5rem;
+
+  th,
+  td {
+    border: none !important;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+  }
+}

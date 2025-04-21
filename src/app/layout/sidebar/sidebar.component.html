@@ -1,0 +1,94 @@
+<body class="bg-custom">
+
+    <!-- Sidebar -->
+    <div class="sidebar bg-white border-end text-black p-3 sticky-top overflow-hidden">
+        <!-- Logo -->
+        <div class="mb-4 text-center fw-bold fs-4 border-bottom pb-2">
+            <img src="solvrDashboard.png" alt="" class="w-75 mb-2">
+        </div>
+
+        <ul class="nav nav-pills flex-column fw-semibold">
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark link-underline-opacity-0 sidebar-link"
+                    href="/dashboard" routerLinkActive="active" routerLink="/dashboard">
+                    <i class="bi bi-speedometer2 fs-5"></i> Dashboard
+                </a>
+            </li>
+
+
+
+            <!-- SUPER_ADMIN MENU -->
+            <ng-container *ngIf="userRole === 'SUPER_ADMIN'">
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark link-underline-opacity-0 sidebar-link"
+                        href="/employee" routerLinkActive="active" routerLink="/employee">
+                        <i class="bi bi-people fs-5"></i> Employee
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark link-underline-opacity-0 sidebar-link"
+                        href="/role-manager" routerLinkActive="active" routerLink="/role-manager">
+                        <i class="bi bi-person-gear fs-5"></i> Role Manager
+                    </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark link-underline-opacity-0 sidebar-link"
+                        href="#">
+                        <i class="bi bi-person fs-5"></i> User
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark link-underline-opacity-0 sidebar-link"
+                        href="#">
+                        <i class="bi bi-person-gear fs-5"></i> User Information
+                    </a>
+                </li> -->
+
+            </ng-container>
+
+            <!-- BM MENU -->
+            <ng-container *ngIf="userRole === 'BRANCH MANAGER'">
+
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark sidebar-link"
+                        href="/approval-bm" routerLinkActive="active" routerLink="/approval-bm">
+                        <i class="bi bi-check2-square fs-5"></i> Approval
+                    </a>
+                </li>
+
+            </ng-container>
+
+            <!-- MARKETING MENU -->
+            <ng-container *ngIf="userRole === 'MARKETING'">
+
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark sidebar-link"
+                        href="/review-marketing" routerLinkActive="active" routerLink="/review-marketing">
+                        <i class="bi bi-check2-square fs-5"></i> Review Loan Application
+                    </a>
+                </li>
+
+            </ng-container>
+
+            <!-- ALL -->
+
+
+
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center gap-2 px-3 py-2 link-dark sidebar-link"
+                    href="/employee-details" routerLinkActive="active" routerLink="/employee-details">
+                    <i class="bi bi-person fs-5"></i>User Details
+                </a>
+            </li>
+        </ul>
+
+
+        <p class="fs-6 text-center bottom-50">Solvr by BCAF &#64;2025</p>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>

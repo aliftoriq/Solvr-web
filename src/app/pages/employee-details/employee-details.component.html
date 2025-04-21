@@ -1,0 +1,77 @@
+<!-- INI ISI -->
+<div class="container py-4">
+    <h4 class="fw-bold mb-4">👤 User Detail</h4>
+
+    <!-- Card: Personal Info -->
+    <div class="card shadow-sm rounded-4 border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="bi bi-person-fill me-2"></i>Personal Info</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">Name</label>
+                    <p class="fw-semibold mb-0">{{ user?.name || '-' }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">Email</label>
+                    <p class="fw-semibold mb-0">{{ user?.username || '-' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card: Work Info -->
+    <div class="card shadow-sm rounded-4 border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="bi bi-building me-2"></i>Work Info</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">Role</label>
+                    <span class="badge bg-primary mx-3">{{ user?.role || '-' }}</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">Status</label>
+                    <span class="badge mx-3" [ngClass]="user?.deleted ? 'bg-danger' : 'bg-success'">
+                        {{ user?.deleted ? 'Deleted' : 'Active' }}
+                    </span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">Department</label>
+                    <p class="fw-semibold mb-0">{{ user?.department || '-' }}</p>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">Branch</label>
+                    <p class="fw-semibold mb-0">{{ user?.branch || '-' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card: Identification -->
+    <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="bi bi-credit-card-2-front-fill me-2"></i>Identification</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label text-muted">NIP</label>
+                    <p class="fw-semibold mb-0">{{ user?.nip || '-' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="button my-5">
+        <a href="/change-password" class="btn btn-primary">Ganti Password</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- Bates -->

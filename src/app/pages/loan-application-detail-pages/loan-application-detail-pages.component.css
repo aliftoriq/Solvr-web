@@ -1,0 +1,20 @@
+.loan-application-detail {
+  padding: 20px;
+}
+
+.loan-detail {
+  margin-bottom: 20px;
+}
+
+.review-section {
+  margin-top: 30px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
