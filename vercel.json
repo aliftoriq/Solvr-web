@@ -1,11 +1,13 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src": "dist/solvr-web/server/main.js",
-        "use": "@vercel/node"
-      }
-    ],
+    "name": "solvr-web",
+    "alias": "solvr-web",
+        "builds": [
+          {
+            "src": "angular.json",
+            "use": "@vercel/angular"
+          }
+        ],
     "routes": [
       {
         "src": "/assets/(.*)",
