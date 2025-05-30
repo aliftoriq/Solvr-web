@@ -1,86 +1,132 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="card my-3 shadow-sm rounded-4 border-0">
-            <h5 class="m-4 text-black">Employee Data</h5>
-            <div class="card-body">
-                <div class="table-responsive fs-6">
-                    <table class="table table-clean table-hover align-middle">
+<!-- Employee Management Header -->
+<div class="card my-4 shadow-sm rounded-4 border-0 overflow-hidden">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <h5 class="mb-0 text-primary fw-semibold">
+            <i class="bi bi-people-fill me-2"></i>Employee Management
+        </h5>
+    </div>
+</div>
 
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>NIP</th>
-                                <th>Email</th>
-                                <th>Department</th>
-                                <th>Branch</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngIf="employees.length === 0">
-                                <td colspan="6" class="text-center text-gray-800">No data available.
-                                </td>
-                            </tr>
-                            <tr *ngFor="let emp of employees" class="text-dark">
-                                <td>{{ emp.name }}</td>
-                                <td>{{ emp.nip }}</td>
-                                <td>{{ emp.email }}</td>
-                                <td>{{ emp.department }}</td>
-                                <td>{{ emp.branch.name }}</td>
-                                <td>
-                                    <!-- <button class="btn" [ngClass]="emp.isActive ? 'btn-success' : 'btn-danger'"
-                                            (click)="toggleStatus(emp)">
-                                            {{ emp.isActive ? 'Deactivate' : 'Activate' }}
-                                        </button> -->
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<!-- Form Add/Edit Employee -->
+<div class="card my-3 shadow-sm rounded-4 border-0 overflow-hidden">
+    <div class="card-header bg-white border-bottom py-3">
+        <h6 class="mb-0 fw-semibold text-primary">
+            <i class="bi bi-pencil-square me-2"></i>{{ selectedEmployeeId ? 'Edit Employee' : 'Add New Employee' }}
+        </h6>
     </div>
 
-    <!-- Add Employee Form Card -->
-    <div class="col-md-6">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">Add New Account</h5>
-            </div>
-            <div class="card-body">
-                <form (ngSubmit)="addEmployee()">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" id="name" class="form-control" [(ngModel)]="newEmployee.name" name="name"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nip" class="form-label">NIP</label>
-                        <input type="text" id="nip" class="form-control" [(ngModel)]="newEmployee.nip" name="nip"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" id="email" class="form-control" [(ngModel)]="newEmployee.email" name="email"
-                            required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="department" class="form-label">Department</label>
-                        <input type="text" id="department" class="form-control" [(ngModel)]="newEmployee.department"
-                            name="department" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="branch" class="form-label">Branch</label>
-                        <select id="branch" class="form-control" [(ngModel)]="newEmployee.branch" name="branch"
-                            required>
-                            <option *ngFor="let branch of branches" [ngValue]="branch.id">
-                                {{ branch.name }}
-                            </option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Add Account</button>
-                </form>
-            </div>
+    <form class="card-body row" (ngSubmit)="selectedEmployeeId ? updateEmployee() : addEmployee()">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" [(ngModel)]="newEmployee.name" name="name" required
+                placeholder="Enter employee name">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">NIP</label>
+            <input type="text" class="form-control" [(ngModel)]="newEmployee.nip" name="nip" required
+                placeholder="Enter NIP">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="newEmployee.email" name="email" required
+                placeholder="Enter email">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Department</label>
+            <input type="text" class="form-control" [(ngModel)]="newEmployee.department" name="department"
+                placeholder="Enter department">
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Branch</label>
+            <select class="form-select" [(ngModel)]="newEmployee.branchId" name="branchId">
+                <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-select" [(ngModel)]="newEmployee.roleId" name="roleId">
+                <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+            </select>
+        </div>
+
+        <div class="card-footer bg-white text-end border-top py-3">
+            <button class="btn btn-primary btn-sm" *ngIf="!selectedEmployeeId" type="submit">
+                <i class="bi bi-plus-circle me-1"></i> Add Employee
+            </button>
+            <!-- Tombol Save Changes dan Cancel -->
+            <button class="btn btn-success btn-sm me-2" *ngIf="selectedEmployeeId" type="submit">
+                <i class="bi bi-check2-circle me-1"></i> Save Changes
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" *ngIf="selectedEmployeeId" (click)="cancelEdit()">
+                <i class="bi bi-x-circle me-1"></i> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Employee List Table & Search -->
+<div class="card my-3 shadow-sm rounded-4 border-0 overflow-hidden">
+    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold text-primary">
+            <i class="bi bi-list-ul me-2"></i>Employee List
+        </h6>
+        <input type="text" class="form-control form-control-sm w-auto" [(ngModel)]="searchTerm"
+            placeholder="🔍 Search employee name">
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive rounded-4">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        <th>NIP</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Branch</th>
+                        <th style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredEmployees.length === 0">
+                        <td colspan="7" class="text-center text-muted">No employees found.</td>
+                    </tr>
+                    <tr *ngFor="let employee of filteredEmployees; let i = index"
+                        [class.table-active]="selectedEmployeeId === employee.id" (click)="selectEmployee(employee)"
+                        style="cursor: pointer;">
+                        <td>{{ i + 1 }}</td>
+                        <td class="fw-medium text-capitalize">{{ employee.name }}</td>
+                        <td>{{ employee.nip }}</td>
+                        <td>{{ employee.email }}</td>
+                        <td class="text-capitalize">{{ employee.department }}</td>
+                        <td class="text-capitalize">{{ employee.branch.name }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger"
+                                (click)="deleteEmployee(employee.id); $event.stopPropagation();"
+                                aria-label="Delete Employee">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary"
+                                (click)="forgetPassword(employee.email); $event.stopPropagation();"
+                                aria-label="Reset Password">
+                                <i class="bi bi-key"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="errorMessage" class="text-danger mt-2">
+            {{ errorMessage }}
         </div>
     </div>
 </div>
+
+<app-alert *ngIf="alertMessage"></app-alert>
+<app-spinner *ngIf="loading"></app-spinner>

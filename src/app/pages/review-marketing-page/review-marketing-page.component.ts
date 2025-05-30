@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { ReviewMarketingService } from '../../services/review-marketing.service';
-import { SidebarComponent } from "../../layout/sidebar/sidebar.component";
-import { TopbarComponent } from "../../layout/topbar/topbar.component";
+import { ReviewMarketingService } from '../../services/loan/review-marketing.service';
 import { CommonModule } from '@angular/common';
-import { ReviewNotesComponent } from "./review-notes/review-notes.component";
+import { ReviewNotesComponent } from '../../component/review-notes/review-notes.component';
 
 @Component({
   selector: 'app-review-marketing-page',
-  imports: [CommonModule, SidebarComponent, TopbarComponent, ReviewNotesComponent],
+  imports: [CommonModule, ReviewNotesComponent],
   templateUrl: './review-marketing-page.component.html',
-  styleUrl: './review-marketing-page.component.css'
+  styleUrl: './review-marketing-page.component.css',
 })
 export class ReviewMarketingPageComponent implements OnInit {
   title = 'Review Marketing Page';
   loanApplications: any[] = [];
   selectedLoan: any = null;
 
-  constructor(private readonly reviewMarketingService: ReviewMarketingService) { }
+  constructor(
+    private readonly reviewMarketingService: ReviewMarketingService
+  ) {}
 
   ngOnInit(): void {
     this.reviewMarketingService.getMarketingReview().subscribe((response) => {
-      this.loanApplications = response;
+      this.loanApplications = response.data;
       console.log(this.loanApplications);
     });
   }
@@ -33,17 +33,29 @@ export class ReviewMarketingPageComponent implements OnInit {
     this.selectedLoan = null;
   }
 
-  submitReview(reviewData: { loanId: string, notes: string }): void {
-    this.reviewMarketingService.reviewLoanApplication(reviewData.loanId, reviewData.notes).subscribe({
-      next: () => {
-        alert('Review berhasil dikirim.');
-        this.closeReviewModal();
-        this.ngOnInit();
-      },
-      error: (err) => {
-        console.error(err);
-        alert('Gagal mengirim review.');
-      }
-    });
+  showSuccessPopup(): void {
+    alert('Review berhasil dikirim.');
+    this.closeReviewModal();
+    this.ngOnInit();
+  }
+
+  showErrorPopup(): void {
+    alert('Gagal mengirim review.');
+  }
+
+  submitReview(reviewData: { loanId: string; notes: string }): void {
+    this.reviewMarketingService
+      .reviewLoanApplication(reviewData.loanId, reviewData.notes)
+      .subscribe({
+        next: () => {
+          this.showSuccessPopup();
+          this.closeReviewModal();
+          this.ngOnInit();
+        },
+        error: (err) => {
+          console.error(err);
+          this.showErrorPopup();
+        },
+      });
   }
 }

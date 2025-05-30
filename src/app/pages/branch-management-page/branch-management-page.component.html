@@ -1,0 +1,92 @@
+<!-- Branch Management Header -->
+<div class="card my-4 shadow-sm rounded-5 border-0">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <h5 class="mb-0 text-primary fw-semibold">
+            <i class="bi bi-geo-alt me-2"></i>Branch Management
+        </h5>
+    </div>
+</div>
+
+<!-- Form Add/Edit Branch -->
+<div class="card my-3 shadow-sm rounded-5 border-0">
+    <div class="card-header bg-white border-bottom py-3">
+        <h6 class="mb-0 fw-semibold text-primary">
+            <i class="bi bi-pencil-square me-2"></i>{{ selectedBranchId ? 'Edit Branch' : 'Add New Branch' }}
+        </h6>
+    </div>
+    <div class="card-body row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Branch Name</label>
+            <input type="text" class="form-control" [(ngModel)]="newBranch.name" placeholder="Enter branch name">
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Longitude</label>
+            <input type="number" class="form-control" [(ngModel)]="newBranch.longitude" placeholder="Longitude">
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label">Latitude</label>
+            <input type="number" class="form-control" [(ngModel)]="newBranch.latitude" placeholder="Latitude">
+        </div>
+    </div>
+    <div class="card-footer bg-white text-end border-top py-3">
+        <button class="btn btn-primary btn-sm" *ngIf="!selectedBranchId" (click)="addBranch()">
+            <i class="bi bi-plus-circle me-1"></i> Add Branch
+        </button>
+        <button class="btn btn-success btn-sm me-2" *ngIf="selectedBranchId" (click)="updateBranch()">
+            <i class="bi bi-check2-circle me-1"></i> Save Changes
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" *ngIf="selectedBranchId" (click)="cancelEdit()">
+            <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+    </div>
+</div>
+
+<!-- Table & Search -->
+<div class="card my-3 shadow-sm rounded-5 border-0">
+    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold text-primary">
+            <i class="bi bi-list-ul me-2"></i>Branch List
+        </h6>
+        <input type="text" class="form-control form-control-sm w-auto" [(ngModel)]="searchTerm"
+            placeholder="🔍 Search branch name">
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive fs-6">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Branch Name</th>
+                        <th>Longitude</th>
+                        <th>Latitude</th>
+                        <th style="width: 10%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredBranches.length === 0">
+                        <td colspan="5" class="text-center text-muted">No branches found.</td>
+                    </tr>
+                    <tr *ngFor="let branch of filteredBranches; let i = index"
+                        [class.table-active]="selectedBranchId === branch.id" (click)="selectBranch(branch)"
+                        style="cursor: pointer;">
+                        <td>{{ i + 1 }}</td>
+                        <td class="fw-medium text-capitalize">{{ branch.name }}</td>
+                        <td>{{ branch.longitude }}</td>
+                        <td>{{ branch.latitude }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger"
+                                (click)="deleteBranch(branch.id); $event.stopPropagation();" aria-label="Delete Branch">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="errorMessage" class="text-danger mt-2">
+            {{ errorMessage }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+/* Container di kanan bawah layar */
+.alert-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  animation: slide-in 0.4s ease-out;
+}
+
+/* Styling umum alert */
+.alert  {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  min-width: 250px;
+  max-width: 300px;
+}
+
+/* Warna berdasarkan jenis alert */
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+/* Animasi muncul dari bawah */
+@keyframes slide-in {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

@@ -106,6 +106,37 @@ export class RoleManagementComponent {
     return [...withFeature, ...withoutFeature];
   }
 
+  // Pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+
+  // get filteredFeatures(): Feature[] {
+  //   return this.allFeatures
+  //     .filter(f => f.name.toLowerCase().includes(this.featureSearchQuery.toLowerCase()))
+  //     .sort((a, b) => a.name.localeCompare(b.name));
+  // }
+
+  get paginatedFeatures(): Feature[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredFeatures.slice(start, end);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredFeatures.length / this.itemsPerPage);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+
+  formatFeatureName(name: string): string {
+    return name.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
 
 }
 

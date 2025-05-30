@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent {
   username = '';
@@ -24,13 +24,13 @@ export class LoginComponent {
       },
       error: () => {
         this.errorMessage = 'Login gagal. Cek kredensial.';
-      }
+      },
     });
   }
 
-showPassword = false;
+  showPassword = false;
 
-togglePasswordVisibility() {
-  this.showPassword = !this.showPassword;
-}
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
 }

@@ -1,0 +1,80 @@
+<!-- Loan Application Section -->
+<div class="card my-4 shadow-sm rounded-4 border-0">
+    <h5 class="m-4 text-black">
+        <i class="bi bi-cash-coin me-2 text-primary"></i>Loan Application
+    </h5>
+
+    <div class="card-body">
+        <!-- Search Bar -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" placeholder="Search by name or NIK..."
+                        [(ngModel)]="loanSearchQuery" (ngModelChange)="filterLoans()" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Loan Table -->
+        <div class="table-responsive fs-6">
+            <table class="table table-hover align-middle table-clean">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th>Name</th>
+                        <th>NIK</th>
+                        <th>Amount</th>
+                        <th>Tenor</th>
+                        <th>Created At</th>
+                        <th>Status</th>
+                        <th class="text-center" style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="filteredLoans.length === 0">
+                        <td colspan="8" class="text-center text-muted">No loan applications found.</td>
+                    </tr>
+                    <tr *ngFor="let loan of filteredLoans.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage); let i = index"
+                        class="text-dark">
+                        <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td class="fw-medium">{{ loan.userCustomer.name }}</td>
+                        <td>{{ loan.userCustomer.nik }}</td>
+                        <td>{{ loan.loanAmount | currency:'IDR ':'symbol':'1.0-0' }}</td>
+                        <td>{{ loan.loanTenor }} bulan</td>
+                        <td>{{ loan.requestedAt | date:'short' }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark">{{ loan.status }}</span>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-primary" (click)="openReviewModal(loan)">
+                                <i class="bi bi-eye"></i> Detail
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-end align-items-center mt-3" *ngIf="totalPages > 1">
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                        <a class="page-link" (click)="goToPage(currentPage - 1)">&laquo;</a>
+                    </li>
+                    <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+                        [class.active]="currentPage === i + 1">
+                        <a class="page-link" (click)="goToPage(i + 1)">{{ i + 1 }}</a>
+                    </li>
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                        <a class="page-link" (click)="goToPage(currentPage + 1)">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<app-review-notes *ngIf="selectedLoan" [loan]="selectedLoan" (close)="closeReviewModal()"></app-review-notes>

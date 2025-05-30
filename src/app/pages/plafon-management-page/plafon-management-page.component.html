@@ -1,0 +1,99 @@
+<!-- Plafon Management Header -->
+<div class="card my-4 shadow-sm rounded-4 border-0 overflow-hidden">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <h5 class="mb-0 text-primary fw-semibold">
+            <i class="bi bi-cash-coin me-2"></i>Plafon Management
+        </h5>
+    </div>
+</div>
+
+<!-- Form Add/Edit Plafon -->
+<div class="card my-3 shadow-sm rounded-4 border-0 overflow-hidden">
+    <div class="card-header bg-white border-bottom py-3">
+        <h6 class="mb-0 fw-semibold text-primary">
+            <i class="bi bi-pencil-square me-2"></i>{{ selectedPlafonId ? 'Edit Plafon' : 'Add New Plafon' }}
+        </h6>
+    </div>
+
+    <div class="card-body row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Name
+                <input type="text" class="form-control" [(ngModel)]="newPlafon.name" placeholder="Enter plafon name">
+            </label>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Amount
+                <input type="number" class="form-control" [(ngModel)]="newPlafon.amount" placeholder="Enter amount">
+            </label>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Level
+                <input type="number" class="form-control" [(ngModel)]="newPlafon.level" placeholder="Enter level">
+            </label>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Interest Rate (%)
+                <input type="number" step="0.01" class="form-control" [(ngModel)]="newPlafon.interestRate"
+                    placeholder="Enter interest rate">
+            </label>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label">Max Tenor (Months)
+                <input type="number" class="form-control" [(ngModel)]="newPlafon.maxTenorMonths"
+                    placeholder="Enter max tenor months">
+            </label>
+        </div>
+    </div>
+
+    <div class="card-footer bg-white text-end border-top py-3">
+        <button class="btn btn-primary btn-sm" *ngIf="!selectedPlafonId" (click)="addPlafon()">
+            <i class="bi bi-plus-circle me-1"></i> Add Plafon
+        </button>
+        <button class="btn btn-success btn-sm me-2" *ngIf="selectedPlafonId" (click)="updatePlafon()">
+            <i class="bi bi-check2-circle me-1"></i> Save Changes
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" *ngIf="selectedPlafonId" (click)="cancelEdit()">
+            <i class="bi bi-x-circle me-1"></i> Cancel
+        </button>
+    </div>
+</div>
+
+<!-- Plafon List Card & Search -->
+<div class="card my-3 shadow-sm rounded-4 border-0 overflow-hidden">
+    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-semibold text-primary">
+            <i class="bi bi-credit-card-2-front me-2"></i>Plafon List
+        </h6>
+        <input type="text" class="form-control form-control-sm w-auto" [(ngModel)]="searchTerm"
+            placeholder="🔍 Search plafon name">
+    </div>
+
+</div>
+
+<div class="card-body">
+    <div class="row g-3">
+        <div class="col-md-6 col-lg-4" *ngFor="let plafon of filteredPlafons; let i = index">
+            <div class="card h-100 shadow-sm border-0 rounded-4 position-relative overflow-hidden">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-primary">{{ plafon.name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Plafon #{{ i + 1 }}</h6>
+                    <hr>
+                    <p class="mb-2"><strong>Amount:</strong> {{ plafon.amount | currency:'IDR' }}</p>
+                    <p class="mb-2"><strong>Level:</strong> {{ plafon.level }}</p>
+                    <p class="mb-2"><strong>Interest Rate:</strong> {{ plafon.interestRate }}%</p>
+                    <p class="mb-2"><strong>Max Tenor:</strong> {{ plafon.maxTenorMonths }} months</p>
+                </div>
+                <div class="card-footer bg-white border-0 d-flex justify-content-end gap-2 p-3">
+                    <button (click)="selectPlafon(plafon)" class="btn btn-warning btn-sm rounded-pill"
+                        aria-label="Edit Plafon" class="btn btn-warning btn-sm rounded-pill">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button (click)="deletePlafon(plafon.id)" class="btn btn-danger btn-sm rounded-pill"
+                        aria-label="Delete Plafon" class="btn btn-danger btn-sm rounded-pill">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

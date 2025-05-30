@@ -8,11 +8,11 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-change-password',
   imports: [FormsModule, CommonModule],
   templateUrl: './change-password.component.html',
-  styleUrl: './change-password.component.css'
+  styleUrl: './change-password.component.css',
 })
 export class ChangePasswordComponent {
   [x: string]: any;
- oldPassword: string = '';
+  oldPassword: string = '';
   newPassword: string = '';
   showOldPassword = false;
   showNewPassword = false;
@@ -21,7 +21,10 @@ export class ChangePasswordComponent {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private authService: AuthService, private readonly router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private readonly router: Router
+  ) {}
 
   toggleOldPasswordVisibility() {
     this.showOldPassword = !this.showOldPassword;
@@ -36,23 +39,24 @@ export class ChangePasswordComponent {
     this.successMessage = '';
     this.errorMessage = '';
 
-    this.authService.changePassword(this.oldPassword, this.newPassword).subscribe({
-      next: () => {
-        this.successMessage = 'Password berhasil diganti!';
-        this.oldPassword = '';
-        this.newPassword = '';
-        this.loading = false;
+    this.authService
+      .changePassword(this.oldPassword, this.newPassword)
+      .subscribe({
+        next: () => {
+          this.successMessage = 'Password berhasil diganti!';
+          this.oldPassword = '';
+          this.newPassword = '';
+          this.loading = false;
 
-         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
-        }, 500); 
-      },
-      error: (err) => {
-        this.errorMessage = err?.error?.message || 'Gagal mengganti password.';
-        this.loading = false;
-      },
-    });
-
-    
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 500);
+        },
+        error: (err) => {
+          this.errorMessage =
+            err?.error?.message || 'Gagal mengganti password.';
+          this.loading = false;
+        },
+      });
   }
 }

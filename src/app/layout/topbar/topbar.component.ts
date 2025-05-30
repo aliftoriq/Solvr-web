@@ -1,15 +1,14 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-topbar',
-  imports: [CommonModule,  FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './topbar.component.html',
-  styleUrl: './topbar.component.css'
+  styleUrl: './topbar.component.css',
 })
-  
 export class TopbarComponent {
   name: string | null = 'User';
   role: string | null = 'User Role';
@@ -28,6 +27,6 @@ export class TopbarComponent {
 
   logout(): void {
     this.authService.logout();
-    window.location.reload(); 
+    window.location.reload();
   }
 }

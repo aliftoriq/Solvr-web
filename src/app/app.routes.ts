@@ -9,13 +9,21 @@ import { ReviewMarketingPageComponent } from './pages/review-marketing-page/revi
 import { EmployeeDetailsComponent } from './pages/employee-details/employee-details.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { MainLayoutComponent } from './pages/main-layout/main-layout.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { RoleManagementComponent } from './pages/role-management/role-management.component';
+import { BranchManagementPageComponent } from './pages/branch-management-page/branch-management-page.component';
+import { ApprovalBoPageComponent } from './pages/employee/approval-bo-page/approval-bo-page.component';
+import { PlafonManagementPageComponent } from './pages/plafon-management-page/plafon-management-page.component';
+import { LoanApplicationHistoryComponent } from './pages/loan-application-history/loan-application-history.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 
 export const routes: Routes = [
   // Public routes (tanpa layout)
+  { path: '', component: LandingPageComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
 
   // Protected routes dengan layout
   {
@@ -23,13 +31,17 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'employee', component: EmployeePageComponent },
       { path: 'approval-bm', component: ApprovalBmPageComponent },
       { path: 'review-marketing', component: ReviewMarketingPageComponent },
+      { path: 'approval-bo', component: ApprovalBoPageComponent },
       { path: 'employee-details', component: EmployeeDetailsComponent },
       { path: 'role-manager', component: RoleManagementComponent },
+      { path: 'branch-manager', component: BranchManagementPageComponent },
+      { path: 'plafon-management', component: PlafonManagementPageComponent },
+      { path: 'loan-history', component: LoanApplicationHistoryComponent },
     ],
   },
 
@@ -37,11 +49,9 @@ export const routes: Routes = [
   { path: '**', component: NotFoundComponent },
 ];
 
-
-
 @NgModule({
   declarations: [],
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

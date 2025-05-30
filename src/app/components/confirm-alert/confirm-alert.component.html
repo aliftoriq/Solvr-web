@@ -1,0 +1,12 @@
+<div *ngIf="show" class="custom-modal-backdrop" (click)="onConfirm(false)">
+    <div class="custom-modal" (click)="$event.stopPropagation()">
+        <img src="/solvr_landscape.png" alt="Solvr Logo" class="modal-logo" />
+
+        <p class="modal-message">{{ message }}</p>
+
+        <div class="modal-actions">
+            <button class="btn-cancel" (click)="onConfirm(false)">Tidak</button>
+            <button class="btn-confirm" (click)="onConfirm(true)">Iya</button>
+        </div>
+    </div>
+</div>

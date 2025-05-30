@@ -1,25 +1,28 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environment/env.staging';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApprovalBmService {
-  private baseUrl = 'http://localhost:8080/api/v1/loan-application';
+  private baseUrl = environment.apiUrl + '/loan-application';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('auth_token');
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 
   getBmApproval(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/branch-manager`, { headers: this.getAuthHeaders() });
+    return this.http.get(`${this.baseUrl}/branch-manager`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   reviewLoanApplication(id: string, notes: string): Observable<any> {

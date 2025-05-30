@@ -1,0 +1,476 @@
+<!-- review-notes.component.html -->
+<div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
+    <div *ngIf="!isLoading" class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+
+            <!-- Header -->
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">
+                    <i class="bi bi-person-badge me-2"></i>Review Pengajuan
+                </h5>
+                <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+            </div>
+
+
+            <div class="modal-body">
+
+                <!-- Progress Tracker -->
+                <div class="d-flex justify-content-between align-items-center mb-4 px-2" style="gap: 10px;">
+                    <!-- Step 1: Marketing -->
+                    <div class="text-center flex-grow-1">
+                        <div class="rounded-circle text-white d-flex justify-content-center align-items-center mx-auto mb-2"
+                            [ngClass]="getProgressWidth('MARKETING') >= 33 ? 'bg-primary' : 'bg-secondary'"
+                            style="width: 40px; height: 40px;">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <small class="d-block">Marketing</small>
+                    </div>
+
+                    <!-- Step 2: Branch Manager -->
+                    <div class="text-center flex-grow-1">
+                        <div class="rounded-circle text-white d-flex justify-content-center align-items-center mx-auto mb-2"
+                            [ngClass]="getProgressWidth('BRANCH MANAGER') >= 66 ? 'bg-primary' : 'bg-secondary'"
+                            style="width: 40px; height: 40px;">
+                            <i class="bi bi-building-fill"></i>
+                        </div>
+                        <small class="d-block">Branch Manager</small>
+                    </div>
+
+                    <!-- Step 3: Back Office -->
+                    <div class="text-center flex-grow-1">
+                        <div class="rounded-circle text-white d-flex justify-content-center align-items-center mx-auto mb-2"
+                            [ngClass]="getProgressWidth('BACK OFFICE') >= 100 ? 'bg-primary' : 'bg-secondary'"
+                            style="width: 40px; height: 40px;">
+                            <i class="bi bi-clipboard-check-fill"></i>
+                        </div>
+                        <small class="d-block">Back Office</small>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Step Indicator & Navigation Controls -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <!-- Previous Button -->
+                    <button class="btn btn-outline-primary" (click)="prevSlide()" [disabled]="currentSlideIndex === 0">
+                        <i class="bi bi-chevron-left"></i> Sebelumnya
+                    </button>
+
+                    <!-- Step Indicator -->
+                    <div class="d-flex align-items-center gap-2">
+                        <ng-container *ngFor="let step of [0, 1, 2]; let i = index">
+                            <div class="rounded-circle d-flex justify-content-center align-items-center" [ngClass]="{
+                            'bg-primary text-white': currentSlideIndex === i,
+                            'bg-light text-muted': currentSlideIndex !== i
+                          }" style="width: 36px; height: 36px; font-weight: 500;">
+                                {{ i + 1 }}
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <!-- Next Button -->
+                    <button class="btn btn-outline-primary" (click)="nextSlide()" [disabled]="currentSlideIndex === 2">
+                        Selanjutnya <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+
+
+                <!-- Slide Content -->
+                <div [ngSwitch]="currentSlideIndex">
+                    <!-- Slide 1: Ringkasan Pinjaman -->
+                    <div *ngSwitchCase="0" class="slide-content">
+                        <div class="card shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Ringkasan Pinjaman</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Nama:</strong> {{ loanDetail?.userCustomer?.name || '-' }}</li>
+                                            <li><strong>Jumlah Pinjaman:</strong> Rp {{ loanDetail?.loanAmount |
+                                                number:'1.0-0' }}</li>
+                                            <li><strong>Tenor:</strong> {{ loanDetail?.loanTenor }} Bulan</li>
+                                            <li><strong>Cicilan per Bulan:</strong> Rp {{ loanDetail?.monthlyPayment |
+                                                number:'1.0-0' }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><strong>Status:</strong> <span class="badge" [ngClass]="{
+                                                'bg-warning': loanDetail?.status === 'REQUEST',
+                                                'bg-success': loanDetail?.status === 'APPROVED',
+                                                'bg-danger': loanDetail?.status === 'REJECTED'
+                                            }">{{ loanDetail?.status }}</span></li>
+                                            <li><strong>Tanggal Pengajuan:</strong> {{ loanDetail?.requestedAt |
+                                                date:'medium' }}</li>
+                                            <li><strong>Risk Level:</strong>
+                                                <span [ngClass]="{
+                                                    'text-danger': loanDetail?.riskLevel === 'HIGH',
+                                                    'text-warning': loanDetail?.riskLevel === 'MEDIUM',
+                                                    'text-success': loanDetail?.riskLevel === 'LOW'
+                                                }">
+                                                    {{ loanDetail?.riskLevel }}
+                                                </span>
+                                            </li>
+                                            <li><strong>Plafon Paket:</strong> {{ loanDetail?.plafonPackage?.name || '-'
+                                                }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Marketing -->
+                        <div class="card shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Data Marketing</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <img src="https://i.pravatar.cc/150" alt="Foto Marketing" class="rounded-circle"
+                                            style="width: 80px; height: 80px; object-fit: cover;">
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h5>{{ marketingEmployee?.name || 'Nama Marketing' }}</h5>
+                                        <p class="mb-1"><i class="bi bi-building me-1"></i> {{
+                                            marketingEmployee?.branch?.name || 'Cabang' }}</p>
+                                        <p class="mb-1"><i class="bi bi-envelope me-1"></i> {{ marketingEmployee?.email
+                                            || '-' }}</p>
+                                        <p class="mb-1"><i class="bi bi-telephone me-1"></i> {{ marketingEmployee?.phone
+                                            || '-' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Detail Nasabah -->
+                    <div *ngSwitchCase="1" class="slide-content">
+                        <div class="card shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Informasi Nasabah</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-person me-2"></i><strong>Nama Lengkap:</strong> {{
+                                                loanDetail?.userCustomer?.name || '-' }}</li>
+                                            <li><i class="bi bi-calendar me-2"></i><strong>Tanggal Lahir:</strong> {{
+                                                loanDetail?.userCustomer?.birthDate || '-' }}</li>
+                                            <li><i class="bi bi-credit-card me-2"></i><strong>NIK:</strong> {{
+                                                loanDetail?.userCustomer?.nik || '-' }}</li>
+                                            <li><i class="bi bi-telephone me-2"></i><strong>No. HP:</strong> {{
+                                                loanDetail?.userCustomer?.phone || '-' }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-geo-alt me-2"></i><strong>Alamat:</strong> {{
+                                                loanDetail?.userCustomer?.address || '-' }}</li>
+                                            <li><i class="bi bi-person-heart me-2"></i><strong>Nama Ibu
+                                                    Kandung:</strong> {{ loanDetail?.userCustomer?.motherName || '-' }}
+                                            </li>
+                                            <li><i class="bi bi-house me-2"></i><strong>Status Rumah:</strong> {{
+                                                loanDetail?.housingStatus || '-' }}</li>
+                                            <li><i class="bi bi-cash-stack me-2"></i><strong>Penghasilan
+                                                    Bulanan:</strong> Rp {{ loanDetail?.userCustomer?.monthlyIncome ?
+                                                (loanDetail?.userCustomer?.monthlyIncome | number:'1.0-0') : '-' }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-outline-primary btn-sm me-2" (click)="viewKTP()">
+                                        <i class="bi bi-file-earmark-image me-1"></i>Lihat KTP
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-sm" (click)="viewSelfie()">
+                                        <i class="bi bi-camera me-1"></i>Lihat Selfie
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lokasi Pengajuan -->
+                        <div class="card shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>Lokasi Pengajuan</h5>
+                            </div>
+                            <div class="card-body p-0">
+
+                                <iframe *ngIf="loanDetail?.latitude && loanDetail?.longitude" width="100%" height="300"
+                                    style="border:0;" [src]="getMapUrl()" allowfullscreen
+                                    title="Lokasi Pengajuan di Peta">
+                                </iframe>
+
+                                <div *ngIf="!loanDetail?.latitude || !loanDetail?.longitude"
+                                    class="bg-light p-4 rounded-3 text-center">
+                                    <i class="bi bi-map" style="font-size: 3rem; color: #6c757d;"></i>
+                                    <p class="mt-2 mb-0">Peta lokasi akan ditampilkan di sini</p>
+                                    <small class="text-muted">Koordinat tidak tersedia</small>
+                                </div>
+
+                                <div class="p-3 text-center">
+                                    <small class="text-muted">Koordinat: {{ loanDetail?.latitude || '-' }}, {{
+                                        loanDetail?.longitude || '-'
+                                        }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        ''
+                    </div>
+
+                    <!-- Slide 3: Statistik dan Review -->
+                    <div *ngSwitchCase="2" class="slide-content">
+                        <!-- Statistik Tambahan -->
+                        <div class="card shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Statistik Tambahan</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-3 bg-light rounded-3 text-center">
+                                            <h6 class="text-muted">Total Pinjaman Aktif</h6>
+                                            <h4 class="text-primary">Rp {{ loanDetail?.activeLoans?.totalAmount || 0 |
+                                                number:'1.0-0' }}</h4>
+                                            <small>{{ loanDetail?.activeLoans?.count || 0 }} pinjaman</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-3 bg-light rounded-3 text-center">
+                                            <h6 class="text-muted">Total Pelunasan</h6>
+                                            <h4 class="text-success">Rp {{ loanDetail?.totalCompletedLoans || 0 |
+                                                number:'1.0-0' }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="p-3 bg-light rounded-3 text-center">
+                                            <h6 class="text-muted">Debt to Income Ratio</h6>
+                                            <h4 [ngClass]="{
+                                                'text-danger': loanDetail?.debtToIncomeRatio > 50,
+                                                'text-warning': loanDetail?.debtToIncomeRatio > 30 && loanDetail?.debtToIncomeRatio <= 50,
+                                                'text-success': loanDetail?.debtToIncomeRatio <= 30
+                                            }">
+                                                {{ loanDetail?.debtToIncomeRatio | number:'1.0-2' }}%
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Riwayat Pinjaman -->
+                        <div class="card shadow-sm rounded-4 mb-4" *ngIf="loanDetail?.loanHistory?.length">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Riwayat Pinjaman</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Jumlah</th>
+                                                <th>Tenor</th>
+                                                <th>Status</th>
+                                                <th>Tanggal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let history of loanDetail?.loanHistory">
+                                                <td>{{ history.id | slice:0:8 }}</td>
+                                                <td>Rp {{ history.amount | number:'1.0-0' }}</td>
+                                                <td>{{ history.tenor }} bulan</td>
+                                                <td>
+                                                    <span class="badge" [ngClass]="{
+                                                        'bg-success': history.status === 'APPROVED',
+                                                        'bg-danger': history.status === 'REJECTED',
+                                                        'bg-secondary': history.status === 'COMPLETED'
+                                                    }">{{ history.status }}</span>
+                                                </td>
+                                                <td>{{ history.date | date:'shortDate' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review oleh Tim -->
+                        <div class="card shadow-sm rounded-4 mb-4">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">Review oleh Tim</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="accordion" id="reviewAccordion">
+                                    <!-- Marketing Review -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-primary bg-opacity-10" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#marketingReview">
+                                                <i class="bi bi-person me-2"></i>Marketing Review
+                                                <span *ngIf="!loanDetail?.marketingNotes"
+                                                    class="badge bg-danger ms-2">Belum diisi</span>
+                                            </button>
+                                        </h2>
+                                        <div id="marketingReview" class="accordion-collapse collapse show">
+                                            <div class="accordion-body">
+                                                <div *ngIf="loanDetail?.marketingNotes">
+                                                    <p><strong>Reviewer:</strong> {{ marketingEmployee?.name || '-' }}
+                                                    </p>
+                                                    <p><strong>Catatan:</strong> {{ loanDetail?.marketingNotes }}</p>
+                                                    <small class="text-muted">Terakhir diupdate: {{
+                                                        loanDetail?.marketingReviewDate | date:'medium' }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Branch Manager Review -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-success bg-opacity-10" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#branchManagerReview">
+                                                <i class="bi bi-person-check me-2"></i>Branch Manager Review
+                                                <span *ngIf="!loanDetail?.branchManagerNotes"
+                                                    class="badge bg-danger ms-2">Belum diisi</span>
+                                            </button>
+                                        </h2>
+                                        <div id="branchManagerReview" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div *ngIf="loanDetail?.branchManagerNotes">
+                                                    <p><strong>Catatan:</strong> {{ loanDetail?.branchManagerNotes }}
+                                                    </p>
+                                                    <small class="text-muted">Terakhir diupdate: {{
+                                                        loanDetail?.branchManagerReviewDate | date:'medium' }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Back Office Review -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button bg-warning bg-opacity-10" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#backOfficeReview">
+                                                <i class="bi bi-building me-2"></i>Back Office Review
+                                                <span *ngIf="!loanDetail?.backOfficeNotes"
+                                                    class="badge bg-danger ms-2">Belum diisi</span>
+                                            </button>
+                                        </h2>
+                                        <div id="backOfficeReview" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div *ngIf="loanDetail?.backOfficeNotes">
+                                                    <p><strong>Catatan:</strong> {{ loanDetail?.backOfficeNotes }}</p>
+                                                    <small class="text-muted">Terakhir diupdate: {{
+                                                        loanDetail?.backOfficeReviewDate | date:'medium' }}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Catatan Reviewer -->
+                <div *ngIf="shouldShowNotesInput()" class="mt-4">
+                    <label for="notes" class="form-label fw-semibold">
+                        {{ getNotesLabel() }}
+                    </label>
+                    <textarea id="notes" [(ngModel)]="notes" class="form-control" rows="4"
+                        placeholder="Tulis catatan review di sini..."></textarea>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="modal-footer">
+                <div *ngIf="userRole === 'BRANCH MANAGER'">
+                    <button type="button" class="btn btn-danger me-2" (click)="showConfirmation('reject')"
+                        [disabled]="!notes.trim()">
+                        <i class="bi bi-x-circle me-1"></i>Tolak
+                    </button>
+                    <button type="button" class="btn btn-success" (click)="showConfirmation('approve')"
+                        [disabled]="!notes.trim()">
+                        <i class="bi bi-check-circle me-1"></i>Setujui
+                    </button>
+                </div>
+                <div *ngIf="userRole === 'MARKETING'">
+                    <button type="button" class="btn btn-primary" (click)="showConfirmation('submit')"
+                        [disabled]="!notes.trim()">
+                        <i class="bi bi-send me-1"></i>Kirim Review
+                    </button>
+                </div>
+                <div *ngIf="userRole === 'BACK OFFICE' && loanDetail?.status === 'APPROVED'">
+                    <button type="button" class="btn btn-primary" (click)="showConfirmation('disburse')">
+                        <i class="bi bi-cash-coin me-1"></i>Cairkan Dana
+                    </button>
+                </div>
+                <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">
+                    <i class="bi bi-x-lg me-1"></i>Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="text-center my-auto py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading dashboard data...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="alert alert-danger mt-4" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ error }}
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-3 shadow-lg" style="border: none;">
+            <div class="modal-header border-0 text-white rounded-top-3">
+                <img src="/solvr_landscape.png" alt="BCA Finance" height="24" class="me-2">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+
+                <p *ngIf="userRole === 'BRANCH MANAGER' && actionType === 'approve'">
+                    Apakah Anda yakin ingin menyetujui pengajuan pinjaman ini?
+                </p>
+                <p *ngIf="userRole === 'BRANCH MANAGER' && actionType === 'reject'">
+                    Apakah Anda yakin ingin menolak pengajuan pinjaman ini?
+                </p>
+                <p *ngIf="userRole === 'MARKETING'">
+                    Apakah Anda yakin ingin mengirim review ini?
+                </p>
+                <p *ngIf="userRole === 'BACK OFFICE'">
+                    Apakah Anda yakin ingin mencairkan dana pinjaman ini?
+                </p>
+
+
+                <!-- Custom radio-like buttons -->
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="button" class="btn btn-outline-danger px-4 py-2 rounded-pill fw-bold"
+                        data-bs-dismiss="modal">
+                        Tidak
+                    </button>
+                    <button type="button" class="btn btn-primary px-4 py-2 rounded-pill fw-bold shadow-sm"
+                        (click)="confirmAction()" data-bs-dismiss="modal">
+                        Iya
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

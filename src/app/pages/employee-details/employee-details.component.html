@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label text-muted">Role</label>
-                    <span class="badge bg-primary mx-3">{{ user?.role || '-' }}</span>
+                    <span class="badge bg-primary mx-3">{{ user?.role.name || '-' }}</span>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label text-muted">Status</label>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label text-muted">Branch</label>
-                    <p class="fw-semibold mb-0">{{ user?.branch || '-' }}</p>
+                    <p class="fw-semibold mb-0">{{ user?.branch.name || '-' }}</p>
                 </div>
             </div>
         </div>

@@ -1,15 +1,16 @@
-<div id="wrapper">
+<!-- app.component.html or your main layout file -->
+<div id="wrapper" class="d-flex">
     <!-- Sidebar -->
     <app-sidebar></app-sidebar>
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column bg-custom">
+    <div id="content-wrapper" class="d-flex flex-column flex-grow-1 bg-custom">
         <div id="content">
             <!-- Topbar -->
             <app-topbar></app-topbar>
 
             <!-- Page Content -->
-            <div class="container-fluid mx-5 w-auto">
+            <div class="container-fluid px-4 w-auto mx-3">
                 <router-outlet></router-outlet>
             </div>
         </div>

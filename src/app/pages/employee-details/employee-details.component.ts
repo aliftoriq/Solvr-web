@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { SidebarComponent } from "../../layout/sidebar/sidebar.component";
-import { TopbarComponent } from "../../layout/topbar/topbar.component";
-import { EmployeeService } from '../../services/employee.service';
+import { EmployeeService } from '../../services/admin/employee.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -9,10 +7,10 @@ import { CommonModule } from '@angular/common';
   selector: 'app-employee-details',
   imports: [FormsModule, CommonModule],
   templateUrl: './employee-details.component.html',
-  styleUrl: './employee-details.component.css'
+  styleUrl: './employee-details.component.css',
 })
 export class EmployeeDetailsComponent {
-user: any = null;
+  user: any = null;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -23,7 +21,7 @@ user: any = null;
       },
       error: (err) => {
         console.error('Gagal mengambil data user:', err);
-      }
+      },
     });
   }
 }
