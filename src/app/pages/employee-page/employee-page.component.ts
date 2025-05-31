@@ -91,8 +91,14 @@ export class EmployeePageComponent implements OnInit {
   }
 
   addEmployee() {
-    if (!this.newEmployee.name?.trim() || !this.newEmployee.email?.trim()) {
-      this.showAlert('Name and Email are required.', 'error');
+    if (
+      !this.newEmployee.name?.trim() ||
+      !this.newEmployee.email?.trim() ||
+      !this.newEmployee.branchId ||
+      !this.newEmployee.roleId ||
+      this.newEmployee.department
+    ) {
+      this.showAlert('All data are required.', 'error');
       return;
     }
 
@@ -108,6 +114,7 @@ export class EmployeePageComponent implements OnInit {
         this.showAlert('Employee added successfully!', 'success');
       },
       error: () => {
+        this.loading = false;
         this.showAlert('Failed to add employee. Please try again.', 'error');
       },
       complete: () => (this.loading = false),
@@ -137,6 +144,7 @@ export class EmployeePageComponent implements OnInit {
           this.showAlert('Employee updated successfully!', 'success');
         },
         error: (err) => {
+          this.loading = false;
           console.error('Failed to update employee', err);
           this.showAlert(
             'Failed to update employee. Please try again.',
@@ -169,6 +177,7 @@ export class EmployeePageComponent implements OnInit {
         this.showAlert('Email sent successfully!', 'success');
       },
       error: (err) => {
+        this.loading = false;
         console.error('Failed to send password reset link', err);
         this.showAlert(
           'Failed to send password reset link. Please try again.',

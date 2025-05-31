@@ -17,6 +17,7 @@ import { PlafonManagementPageComponent } from './pages/plafon-management-page/pl
 import { LoanApplicationHistoryComponent } from './pages/loan-application-history/loan-application-history.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { VerifyEmailComponent } from './pages/auth/verify-email/verify-email.component';
 
 export const routes: Routes = [
   // Public routes (tanpa layout)
@@ -24,8 +25,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'verify-email', component: VerifyEmailComponent },
 
-  // Protected routes dengan layout
   {
     path: '',
     component: MainLayoutComponent,
@@ -45,7 +46,6 @@ export const routes: Routes = [
     ],
   },
 
-  // Not found fallback
   { path: '**', component: NotFoundComponent },
 ];
 
