@@ -548,6 +548,10 @@
                     </button>
                 </div>
                 <div *ngIf="userRole === 'MARKETING'">
+                    <button type="button" class="btn btn-danger me-2" (click)="showConfirmation('reject')"
+                        [disabled]="!notes.trim()">
+                        <i class="bi bi-x-circle me-1"></i>Tolak
+                    </button>
                     <button type="button" class="btn btn-primary" (click)="showConfirmation('submit')"
                         [disabled]="!notes.trim()">
                         <i class="bi bi-send me-1"></i>Kirim Review
@@ -600,6 +604,9 @@
                 </p>
                 <p *ngIf="userRole === 'MARKETING'">
                     Apakah Anda yakin ingin mengirim review ini?
+                </p>
+                <p *ngIf="userRole === 'MARKETING' && actionType === 'reject'">
+                    Apakah Anda yakin ingin menolak pengajuan pinjaman ini?
                 </p>
                 <p *ngIf="userRole === 'BACK OFFICE'">
                     Apakah Anda yakin ingin mencairkan dana pinjaman ini?
