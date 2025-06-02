@@ -96,7 +96,7 @@ export class EmployeePageComponent implements OnInit {
       !this.newEmployee.email?.trim() ||
       !this.newEmployee.branchId ||
       !this.newEmployee.roleId ||
-      this.newEmployee.department
+      !this.newEmployee.department
     ) {
       this.showAlert('All data are required.', 'error');
       return;
@@ -112,6 +112,7 @@ export class EmployeePageComponent implements OnInit {
         );
         this.branchName = branch ? branch.name : '';
         this.showAlert('Employee added successfully!', 'success');
+        this.loading = false;
       },
       error: () => {
         this.loading = false;

@@ -1,0 +1,38 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f8fafc, #e0e7ff);
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  .verify-card {
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px);
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+  }
+
+  .verify-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
+
+  .verify-card .alert {
+    border-radius: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: none;
+    font-weight: 500;
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+  }
+
+  .btn-success:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+  }

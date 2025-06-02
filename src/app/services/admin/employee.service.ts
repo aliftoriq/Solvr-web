@@ -39,7 +39,7 @@ export class EmployeeService {
   }
 
   deleteEmployee(employeeId: string): Observable<any> {
-    return this.http.post(this.employeeUrl, employeeId, {
+    return this.http.delete(`${this.employeeUrl}/${employeeId}`, {
       headers: this.getAuthHeaders(),
     });
   }
