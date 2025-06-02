@@ -125,4 +125,15 @@ export class AuthService {
       newPassword,
     });
   }
+
+  verifyEmail(token: string): Observable<any> {
+    return this.http.post<any>(this.authUrl + '/verify', { token }).pipe(
+      tap((res) => {
+        if (this.isBrowser && res.data?.token) {
+          localStorage.setItem(this.tokenKey, res.data.token);
+          this.tokenCache = res.data.token;
+        }
+      })
+    );
+  }
 }
