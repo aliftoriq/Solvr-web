@@ -602,7 +602,7 @@
                 <p *ngIf="userRole === 'BRANCH MANAGER' && actionType === 'reject'">
                     Apakah Anda yakin ingin menolak pengajuan pinjaman ini?
                 </p>
-                <p *ngIf="userRole === 'MARKETING'">
+                <p *ngIf="userRole === 'MARKETING' && actionType === 'submit'">
                     Apakah Anda yakin ingin mengirim review ini?
                 </p>
                 <p *ngIf="userRole === 'MARKETING' && actionType === 'reject'">
