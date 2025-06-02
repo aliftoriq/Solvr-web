@@ -4,7 +4,6 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environment/env.staging';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -15,29 +14,17 @@ import { AuthService } from '../../../services/auth.service';
 export class VerifyEmailComponent {
   status: 'loading' | 'success' | 'expired' = 'loading';
 
-  constructor(
-    private routes: ActivatedRoute,
-    private http: HttpClient,
-    private authService: AuthService
-  ) {}
+  constructor(private routes: ActivatedRoute, private http: HttpClient) {}
 
   ngOnInit(): void {
     const token = this.routes.snapshot.queryParamMap.get('token');
-    if (!token) {
+    if (token) {
+      this.http.post(`${environment.apiUrl}/auth/verify`, { token }).subscribe({
+        next: () => (this.status = 'success'),
+        error: () => (this.status = 'expired'),
+      });
+    } else {
       this.status = 'expired';
-      return;
     }
-    this.authService.verifyEmail(token).subscribe({
-      next: (res) => {
-        if (res.status === 'success') {
-          this.status = 'success';
-        } else {
-          this.status = 'expired';
-        }
-      },
-      error: () => {
-        this.status = 'expired';
-      },
-    });
   }
 }
